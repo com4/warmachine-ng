@@ -32,6 +32,9 @@ class SlackWS(Connection):
         self.user_map = {}     # user info keyed by their slack id
         self.user_nick_to_id = {}  # slack user id mapped to the (nick)name
 
+        #: The nickname of the bot
+        self.nick = ''
+        #: The slack id for the bot
         self.my_id = '000'
 
         self.ws = None
@@ -64,7 +67,7 @@ class SlackWS(Connection):
         return True
 
     def on_hello(self, msg):
-        self.log.info('Connected to Slack')
+        self.log.info('Connected to Slack as {}'.format(self.nick))
         self.STATUS = CONNECTED
         self.start_ping()
 

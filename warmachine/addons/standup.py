@@ -330,15 +330,19 @@ class StandUpPlugin(WarMachinePlugin):
             else:
                 await self.standup_priv_msg(connection, u, channel)
 
-        # schedule a function to run in 12 hours to clear out this channel from
+        # schedule a function to run in 8 hours to clear out this channel from
         # self.users_awaiting_reply for all `users`.
-        # This is assuming that after 12 hours, nobody cares about the report
+        # This is assuming that after the hours, nobody cares about the report
         # from people who never reported earlier. It will prevent flooding
         # "tomorrow's" response to channels whose standup is scheduled for
         # later.
         self._loop.call_later(8*(60*60),  # 8 hours
                               self.clean_channel_from_waiting_replies, channel,
                               users)
+
+        # Schedule the next standup
+        self.schedule_standup(
+            connection, channel, self.standup_schedules[channel]['time24h'])
 
 
     async def standup_priv_msg(self, connection, user, channel, pester=600,
