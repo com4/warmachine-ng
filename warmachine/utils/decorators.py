@@ -25,12 +25,12 @@ class memoize(object):
 
         h = self._hash(str(args) + str(kwargs))
         if h in self.cache:
-            self.log.debug('Using cached value for {}({}, {})'.format(
-                self.func.__name__, ', '.join(str(a) for a in args),
-                ','.join('{}={} '.format(k, v) for k, v in kwargs.items())))
+            # This is noisy, but helpful for debugging so it's commented out
+            # self.log.debug('Using cached value for {}({}, {})'.format(
+            #     self.func.__name__, ', '.join(str(a) for a in args),
+            #     ','.join('{}={} '.format(k, v) for k, v in kwargs.items())))
             return self.cache[h]
         else:
-            self.log.debug('Caching value')
             value = self.func(*args, **kwargs)
             self.cache[h] = value
 

@@ -246,8 +246,14 @@ class StandUpPlugin(WarMachinePlugin):
         """
         next_standup = self.get_next_standup_secs(time24h)
 
+        self.log.info('Scheduling standup on connection {} for channel {} @ '
+                      '{}'.format(
+                          connection.__class__.__name__, channel, next_standup))
+
+
+        # calculate the timedelta for next standup and now
         standup_td = next_standup - datetime.now()
-        next_standup_secs = standup_td.seconds
+        next_standup_secs = standup_td.total_seconds()
 
         f = self._loop.call_later(
             next_standup_secs, functools.partial(
@@ -258,18 +264,15 @@ class StandUpPlugin(WarMachinePlugin):
             self.standup_schedules[channel]['future'].cancel()
 
             self.standup_schedules[channel]['future'] = f
-            self.standup_schedules[channel]['datetime'] = next_standup
+            self.standup_schedules[channel]['next_standup'] = next_standup
             self.standup_schedules[channel]['time24h'] = time24h
         else:
             self.standup_schedules[channel] = {
                 'future': f,
-                'datetime': next_standup,
+                'next_standup': next_standup,
                 'time24h': time24h,
                 'ignoring': [],
             }
-
-        self.log.info('New schedule added to channel {} for {}'.format(
-            channel, time24h))
 
     def standup_schedule_func(self, connection, channel):
         """
@@ -420,12 +423,13 @@ class StandUpPlugin(WarMachinePlugin):
 
         standup_hour, standup_minute = (int(s) for s in time24h.split(':'))
 
-        next_standup = datetime(now.year, now.month, now.day,
-                                standup_hour, standup_minute)
+        next_standup = datetime(
+            now.year, now.month, now.day, standup_hour, standup_minute)
 
-        # If we've already past the time for today, schedule it for that time
-        # on the next weekday
-        if now > next_standup or now.isoweekday() > 4:
+        # Schedule for the future if:
+        #  - we've already past the time for today
+        #  - it's a weekend
+        if now >= next_standup or now.isoweekday() > 5:
             # if it's friday(5), wait 72 hours
             if now.isoweekday() == 5:
                 hours = 72

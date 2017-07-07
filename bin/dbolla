@@ -95,8 +95,9 @@ class Bot(object):
                     self.log.exception(e)
                     continue
 
-            self.log.debug('MSG {}: {}'.format(
-                connection.__class__.__name__, message))
+            # Log the raw message that was sent
+            # self.log.debug('MSG {}: {}'.format(
+            #     connection.__class__.__name__, message))
 
     def load_plugin(self, class_path):
         """

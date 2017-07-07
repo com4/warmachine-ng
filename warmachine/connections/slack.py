@@ -542,3 +542,20 @@ class SlackWS(Connection):
         #      'avatar_hash': '49ec8bc36896'},
         #  'subtype': 'group_join',
         #  'text': '<@U0286167T|synic> has joined the group'}
+
+    def on_desktop_notification(self, msg):
+        """
+        Desktop notifications, I guess
+        """
+        # {'subtitle': 'jason',
+        #  'content': '!standup-add 16:35',
+        #  'channel': 'D22S9KBG9',
+        #  'title': 'Teem',
+        #  'ssbFilename': 'knock_brush.mp3',
+        #  'is_shared': False,
+        #  'msg': '1499294083.080598',
+        #  'avatarImage': 'https://avatars.sla....._72.jpg',
+        #  'event_ts': '1499294083.293788',
+        #  'launchUri': 'slack://channel?id=D2.....&team=T027XPE12',
+        #  'type': 'desktop_notification',
+        #  'imageUri': None}
