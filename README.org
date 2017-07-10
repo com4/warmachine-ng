@@ -1,7 +1,7 @@
 #  LocalWords: asyncio async plugin
 
 * Setting up the bot
-D'bolla is a no bullshit extensible IRC/Slack bot written for Python 3.5 using
+Warmachine is a no bullshit extensible IRC/Slack bot written for Python 3.5 using
 asyncio.
 
 ** Install dependencies:
@@ -11,7 +11,7 @@ asyncio.
 #+END_SRC
 
 ** Configure
-Copy dbolla.conf.example to dbolla.conf and edit this file. You can
+Copy warmachine.conf.example to warmachine.conf and edit this file. You can
 specify multiples of the same connection by prefixing the config section with
 'slack:' or 'irc:' followed by a unique name for this connection.
 
@@ -19,7 +19,7 @@ specify multiples of the same connection by prefixing the config section with
 Simply run the command:
 
 #+BEGIN_SRC bash
-    ./bin/dbolla -c /path/to/my/dbolla.conf
+    ./bin/warmachine -c /path/to/my/warmachine.conf
 #+END_SRC
 
 * Writing a Plugin
@@ -87,7 +87,7 @@ defined somewhere near the top of your file.
 ** ~self.config_dir~
 The directory to store any configuration files and other junk in.
 ** ~self.connect()~
-D'bolla uses python 3's asyncio to manage multiple connections concurrently thus
+Warmachine uses python 3's asyncio to manage multiple connections concurrently thus
 you should use ~asyncio.open_connection~ to create your connection. Once you
 have successfully connected you must set ~self.status~ to
 ~warmachine.connections.base.CONNECTED~. This indicates the connection is ready
